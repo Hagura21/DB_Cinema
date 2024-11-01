@@ -1,18 +1,24 @@
-﻿namespace CinemaTest
+﻿// <copyright file="SessionTests.cs" company="Кирюшин Н.А.">
+// Copyright (c) Кирюшин Н.А.. All rights reserved.
+// </copyright>
+
+namespace CinemaTest
 {
     using System;
     using System.Collections.Generic;
     using Cinema;
     using NUnit.Framework;
 
-    /// Тесты для класса <see cref="Cinema.Session"/>.
+    /// <summary>
+    /// Тесты для класса сеанс <see cref="Cinema.Session"/>.
+    /// </summary>
     [TestFixture]
     public sealed class SessionTests
     {
         [Test]
         public void Ctor_ValidData_DoesNotThrow()
         {
-            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", "Leonardo DiCaprio, Joseph Gordon-Levitt");
+            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio, Joseph Gordon-Levitt" });
             var hall = new Hall("Hall", 100);
             var date = new DateTime(2023, 10, 31, 19, 0, 0);
             var startTime = new DateTime(2024, 10, 31, 19, 0, 0);
@@ -23,7 +29,7 @@
         [Test]
         public void Equals_DifferentSessions_NotEqual()
         {
-            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", "Leonardo DiCaprio, Joseph Gordon-Levitt");
+            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio, Joseph Gordon-Levitt" });
             var hall1 = new Hall("Hall1", 100);
             var hall2 = new Hall("Hall2", 100);
             var date = new DateTime(2021, 7, 21, 19, 0, 0);

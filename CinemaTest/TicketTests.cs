@@ -1,4 +1,8 @@
-﻿namespace CinemaTest
+﻿// <copyright file="TicketTests.cs" company="Кирюшин Н.А.">
+// Copyright (c) Кирюшин Н.А.. All rights reserved.
+// </copyright>
+
+namespace CinemaTest
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +10,9 @@
     using NUnit.Framework;
     using static System.Runtime.InteropServices.JavaScript.JSType;
 
-    /// Тесты для класса <see cref="Cinema.Ticket"/>.
+    /// <summary>
+    /// Тесты для класса билет <see cref="Cinema.Ticket"/>.
+    /// </summary>
     [TestFixture]
     public sealed class TicketTests
     {
@@ -14,7 +20,7 @@
         public void Ctor_ValidData_DoesNotThrow()
         {
             var user = new User("username", "email@example.com", "password");
-            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", "Leonardo DiCaprio, Joseph Gordon-Levitt");
+            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio, Joseph Gordon-Levitt" });
             var hall = new Hall("Hall", 100);
             var date = new DateTime(2023, 10, 31);
             var startTime = new DateTime(19, 0);
@@ -28,7 +34,7 @@
         public void Equals_DifferentTickets_NotEqual()
         {
             var user = new User("username", "email@example.com", "password");
-            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", "Leonardo DiCaprio, Joseph Gordon-Levitt");
+            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio, Joseph Gordon-Levitt" });
             var hall = new Hall("Hall", 100);
             var date1 = new DateTime(2022, 11, 21);
             var startTime1 = new DateTime(19, 0);
@@ -48,7 +54,7 @@
         public void Equals_SimilarTickets_Success()
         {
             var user = new User("username", "email@example.com", "password");
-            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", "Leonardo DiCaprio, Joseph Gordon-Levitt");
+            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio, Joseph Gordon-Levitt" });
             var hall = new Hall("Hall", 100);
             var date1 = new DateTime(2022, 11, 21);
             var startTime1 = new DateTime(19, 0);
