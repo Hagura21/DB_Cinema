@@ -1,4 +1,4 @@
-﻿// <copyright file="User.cs" company="Кирюшин Н.А.">
+// <copyright file="User.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
@@ -7,25 +7,25 @@ namespace Cinema
     using Staff;
 
     /// <summary>
-    /// Класс Клиент.
+    /// Класс Автор.
     /// </summary>
     public sealed class User : IEquatable<User>
     {
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="User"/>.
         /// </summary>
-        /// <param name="userName"> Имя клиента.</param>
-        /// <param name="email"> Почта. </param>
-        /// <param name="password"> Пароль. </param>
+        /// <param name="userName"> Фамилия.</param>
+        /// <param name="email"> Имя. </param>
+        /// <param name="password"> Отчество. </param>
         /// <exception cref="ArgumentNullException">
-        /// Если имя, почта или пароль <see langword="null"/>.
+        /// Если имя или фамилия <see langword="null"/>.
         /// </exception>
         public User(
             string userName,
             string email,
             string password)
         {
-            this.UserId = Guid.NewGuid();
+            this.UserId = Guid.Empty;
             this.UserName = userName.TrimOrNull() ?? throw new ArgumentNullException(nameof(userName));
             this.Email = email.TrimOrNull() ?? throw new ArgumentNullException(nameof(email));
             this.Password = password.TrimOrNull() ?? throw new ArgumentNullException(nameof(password));
@@ -37,17 +37,17 @@ namespace Cinema
         public Guid UserId { get; }
 
         /// <summary>
-        /// Имя клиента.
+        /// Фамилия.
         /// </summary>
         public string UserName { get; }
 
         /// <summary>
-        /// Почта.
+        /// Имя.
         /// </summary>
         public string Email { get; }
 
         /// <summary>
-        /// Пароль.
+        /// Отчество.
         /// </summary>
         public string Password { get; }
 
