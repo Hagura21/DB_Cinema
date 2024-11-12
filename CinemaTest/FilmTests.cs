@@ -1,68 +1,103 @@
-﻿// <copyright file="FilmTests.cs" company="Кирюшин Н.А.">
-// Copyright (c) Кирюшин Н.А.. All rights reserved.
-// </copyright>
-
 namespace CinemaTest
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Cinema;
     using NUnit.Framework;
 
     /// <summary>
-    /// Тесты для класса фильм <see cref="Cinema.Film"/>.
+    /// Тесты на класс <see cref="Cinema.Film"/>.
     /// </summary>
     [TestFixture]
     public sealed class FilmTests
     {
-        [TestCase("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new[] { "Leonardo DiCaprio", "Joseph Gordon-Levitt" })]
-        [TestCase("The Matrix", "Action", "A hacker discovers the nature of his reality.", 16, 136, "Lana Wachowski, Lilly Wachowski", new[] { "Keanu Reeves", "Laurence Fishburne" })]
-        public void Ctor_ValidData_DoesNotThrow(string title, string genre, string synopsis, int ageRestriction, int duration, string director, string[] cast)
+        [Test]
+        public void Ctor_ValidData_DoesNotThrow()
         {
-            Assert.DoesNotThrow(() => _ = new Film(title, genre, synopsis, ageRestriction, duration, director, new List<string>(cast)));
+            // Arrange
+            var director = new Director("Christopher Nolan");
+            var actors = new HashSet<Actor>
+            {
+                new Actor("Leonardo DiCaprio"),
+                new Actor("Joseph Gordon-Levitt"),
+            };
+
+            // Act & Assert
+            Assert.DoesNotThrow(() => _ = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actors));
         }
 
-        [TestCase(null, "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new[] { "Leonardo DiCaprio" })]
-        [TestCase("Inception", null, "A mind-bending thriller.", 13, 148, "Christopher Nolan", new[] { "Leonardo DiCaprio" })]
-        [TestCase("Inception", "Sci-Fi", null, 13, 148, "Christopher Nolan", new[] { "Leonardo DiCaprio" })]
-        [TestCase("Inception", "Sci-Fi", "A mind-bending thriller.", 13, -1, "Christopher Nolan", new[] { "Leonardo DiCaprio" })]
-        [TestCase("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, null, new[] { "Leonardo DiCaprio" })]
-        public void Ctor_InvalidData_ThrowsException(string title, string genre, string synopsis, int ageRestriction, int duration, string director, string[] cast)
+        [Test]
+        public void Ctor_InvalidData_ThrowsException()
         {
-            if (duration <= 0 || ageRestriction < 0)
+            var director = new Director("Christopher Nolan");
+            var actors = new HashSet<Actor>
             {
-                Assert.Throws<ArgumentOutOfRangeException>(() => _ = new Film(title, genre, synopsis, ageRestriction, duration, director, new List<string>(cast)));
-            }
-            else
-            {
-                Assert.Throws<ArgumentNullException>(() => _ = new Film(title, genre, synopsis, ageRestriction, duration, director, new List<string>(cast)));
-            }
+                new Actor("Leonardo DiCaprio"),
+            };
+
+            Assert.Throws<ArgumentNullException>(() => _ = new Film(null, "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actors));
+            Assert.Throws<ArgumentNullException>(() => _ = new Film("Inception", null, "A mind-bending thriller.", 13, 148, director, actors));
+            Assert.Throws<ArgumentNullException>(() => _ = new Film("Inception", "Sci-Fi", null, 13, 148, director, actors));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", -1, 148, director, actors));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 0, director, actors));
         }
 
         [Test]
         public void Equals_DifferentFilms_NotEqual()
         {
-            var film1 = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio, Joseph Gordon-Levitt" });
-            var film2 = new Film("Interstellar", "Sci-Fi", "Exploration of space and time.", 13, 169, "Christopher Nolan", new List<string> { "Matthew McConaughey", "Anne Hathaway" });
+            // Arrange
+            var director = new Director("Christopher Nolan");
+            var actors1 = new HashSet<Actor>
+            {
+                new Actor("Leonardo DiCaprio"),
+                new Actor("Joseph Gordon-Levitt"),
+            };
+            var actors2 = new HashSet<Actor>
+            {
+                new Actor("Matthew McConaughey"),
+                new Actor("Anne Hathaway"),
+            };
 
+            var film1 = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actors1);
+            var film2 = new Film("Interstellar", "Sci-Fi", "Exploration of space and time.", 13, 169, director, actors2);
+
+            // Assert
             Assert.That(film1, Is.Not.EqualTo(film2));
         }
 
         [Test]
         public void Equals_SimilarFilms_Success()
         {
-            var film1 = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio", "Joseph Gordon-Levitt" });
-            var film2 = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio", "Joseph Gordon-Levitt" });
+            // Arrange
+            var director = new Director("Christopher Nolan");
+            var actors = new HashSet<Actor>
+            {
+                new Actor("Leonardo DiCaprio"),
+                new Actor("Joseph Gordon-Levitt"),
+            };
 
+            var film1 = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actors);
+            var film2 = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actors);
+
+            // Assert
             Assert.That(film1, Is.EqualTo(film2));
         }
 
         [Test]
         public void ToString_ReturnsExpectedString()
         {
-            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, "Christopher Nolan", new List<string> { "Leonardo DiCaprio", "Joseph Gordon-Levitt" });
+            // Arrange
+            var director = new Director("Christopher Nolan");
+            var actors = new HashSet<Actor>
+            {
+                new Actor("Leonardo DiCaprio"),
+                new Actor("Joseph Gordon-Levitt"),
+            };
+            var film = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actors);
             var expectedString = "Inception (Sci-Fi) - Directed by Christopher Nolan";
 
+            // Assert
             Assert.That(film.ToString(), Is.EqualTo(expectedString));
         }
     }
