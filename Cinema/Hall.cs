@@ -1,10 +1,11 @@
-﻿// <copyright file="Hall.cs" company="Кирюшин Н.А.">
+// <copyright file="Hall.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
 namespace Cinema
 {
-    using Staff;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Класс Зал.
@@ -14,22 +15,26 @@ namespace Cinema
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="Hall"/>.
         /// </summary>
-        /// <param name="name"> Название зала.</param>
-        /// <param name="capacity"> Вместимость. </param>
+        /// <param name="name">Название зала.</param>
+        /// <param name="capacity">Вместимость зала.</param>
         /// <exception cref="ArgumentNullException">
-        /// Если название или вместимость <see langword="null"/>.
+        /// Если название зала <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Если емкость зала меньше или равна нулю.
         /// </exception>
         public Hall(
             string name,
             int capacity)
         {
             this.HallId = Guid.NewGuid();
-            this.Name = name ?? throw new ArgumentNullException(nameof(name));
-            this.Capacity = capacity > 0 ? capacity : throw new ArgumentNullException("Capacity cannot be negative.", nameof(capacity));
+            this.Name = name ?? throw new ArgumentNullException(nameof(name), "Название зала не может быть null.");
+            this.Capacity = capacity > 0 ? capacity : throw new ArgumentException("Вместимость зала должна быть положительной.", nameof(capacity));
+            this.sessions = new List<Session>();
         }
 
         /// <summary>
-        /// Идентификатор.
+        /// Идентификатор зала.
         /// </summary>
         public Guid HallId { get; }
 
@@ -39,12 +44,55 @@ namespace Cinema
         public string Name { get; }
 
         /// <summary>
-        /// Вместимость.
+        /// Вместимость зала.
         /// </summary>
         public int Capacity { get; }
 
+        /// <summary>
+        /// Список сессий, назначенных на зал.
+        /// </summary>
+        private readonly List<Session> sessions;
+
+        /// <summary>
+        /// Возвращает доступ к сессиям зала.
+        /// </summary>
+        public IReadOnlyCollection<Session> Sessions => this.sessions.AsReadOnly();
+
+        /// <summary>
+        /// Добавляет новую сессию в зал.
+        /// </summary>
+        /// <param name="session">Сессия для добавления.</param>
+        /// <exception cref="ArgumentNullException">Если сессия <see langword="null"/>.</exception>
+        public void AddSession(Session session)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session), "Сессия не может быть null.");
+            }
+
+            if (!this.sessions.Contains(session))
+            {
+                this.sessions.Add(session);
+            }
+        }
+
+        /// <summary>
+        /// Удаляет сессию из зала.
+        /// </summary>
+        /// <param name="session">Сессия для удаления.</param>
+        /// <returns>Истина, если сессия была удалена; иначе — ложь.</returns>
+        public bool RemoveSession(Session session)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session), "Сессия не может быть null.");
+            }
+
+            return this.sessions.Remove(session);
+        }
+
         /// <inheritdoc/>
-        public bool Equals(Hall? other)
+        public bool Equals(Hall other)
         {
             if (other is null)
             {
@@ -56,8 +104,7 @@ namespace Cinema
                 return true;
             }
 
-            return this.Name == other.Name &&
-                   this.Capacity == other.Capacity;
+            return this.Name == other.Name && this.Capacity == other.Capacity;
         }
 
         /// <inheritdoc/>
@@ -74,6 +121,6 @@ namespace Cinema
 
         /// <inheritdoc/>
         public override string ToString() =>
-            $"{this.Name} (Capscity: {this.Capacity})";
+            $"{this.Name} (Capasity: {this.Capacity})";
     }
 }
