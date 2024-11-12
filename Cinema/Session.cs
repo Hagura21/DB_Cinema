@@ -1,25 +1,25 @@
-﻿// <copyright file="Session.cs" company="Кирюшин Н.А.">
+// <copyright file="Session.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
 namespace Cinema
 {
-    using Staff;
+    using System;
 
     /// <summary>
-    /// Класс Сеанс.
+    /// Класс Сессии.
     /// </summary>
     public sealed class Session : IEquatable<Session>
     {
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="Session"/>.
         /// </summary>
-        /// <param name="film"> Фильм.</param>
-        /// <param name="hall"> Зал. </param>
-        /// <param name="startTime"> Начало сеанса. </param>
-        /// <param name="date"> Дата сеанса. </param>
+        /// <param name="film">Фильм для сессии.</param>
+        /// <param name="hall">Зал, где будет проходить сеанс.</param>
+        /// <param name="startTime">Время начала сеанса.</param>
+        /// <param name="date">Дата проведения сеанса.</param>
         /// <exception cref="ArgumentNullException">
-        /// Если какое-либо значение <see langword="null"/>.
+        /// Если фильм или зал <see langword="null"/>.
         /// </exception>
         public Session(
             Film film,
@@ -28,14 +28,15 @@ namespace Cinema
             DateTime date)
         {
             this.SessionId = Guid.NewGuid();
-            this.Film = film ?? throw new ArgumentNullException(nameof(film));
-            this.Hall = hall ?? throw new ArgumentNullException(nameof(hall));
+            this.Film = film ?? throw new ArgumentNullException(nameof(film), "Фильм не может быть null.");
+            this.Hall = hall ?? throw new ArgumentNullException(nameof(hall), "Зал не может быть null.");
             this.StartTime = startTime;
             this.Date = date;
+            this.Hall.AddSession(this);
         }
 
         /// <summary>
-        /// Идентификатор.
+        /// Идентификатор сессии.
         /// </summary>
         public Guid SessionId { get; }
 
@@ -50,12 +51,12 @@ namespace Cinema
         public Hall Hall { get; }
 
         /// <summary>
-        /// Начало сеанса.
+        /// Время начала.
         /// </summary>
         public DateTime StartTime { get; }
 
         /// <summary>
-        /// Дата сеанса.
+        /// Дата.
         /// </summary>
         public DateTime Date { get; }
 
@@ -73,9 +74,9 @@ namespace Cinema
             }
 
             return this.Film.Equals(other.Film) &&
-                this.Hall.Equals(other.Hall) &&
-                this.StartTime == other.StartTime &&
-                this.Date == other.Date;
+                   this.Hall.Equals(other.Hall) &&
+                   this.StartTime == other.StartTime &&
+                   this.Date == other.Date;
         }
 
         /// <inheritdoc/>
@@ -87,11 +88,11 @@ namespace Cinema
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Film, this.Hall, this.StartTime);
+            return HashCode.Combine(this.Film, this.Hall, this.StartTime, this.Date);
         }
 
         /// <inheritdoc/>
         public override string ToString() =>
-            $"{this.Film.Title} in {this.Hall.Name} on {this.Date.ToShortDateString()} at {this.StartTime.ToShortDateString()}";
+            $"{this.Film.Title} in {this.Hall.Name} - Date: {this.Date:yyyy-MM-dd} {this.StartTime:HH:mm:ss}";
     }
 }
