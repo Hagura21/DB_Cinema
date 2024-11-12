@@ -1,4 +1,4 @@
-﻿// <copyright file="Ticket.cs" company="Кирюшин Н.А.">
+// <copyright file="Ticket.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
@@ -7,31 +7,28 @@ namespace Cinema
     using Staff;
 
     /// <summary>
-    /// Класс Билет.
+    /// Класс Полка.
     /// </summary>
     public sealed class Ticket : IEquatable<Ticket>
     {
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="Ticket"/>.
         /// </summary>
-        /// <param name="session"> Сеанс.</param>
-        /// <param name="user"> Клиент.</param>
-        /// <param name="seat"> Место.</param>
-        /// <param name="cost"> Стоимость билета.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Если какое-либо значение <see langword="null"/>.
-        /// </exception>
+        /// <param name="session"> Название полки.</param>
+        /// <param name="user"> Название поки.</param>
+        /// <param name="seat"> Название пки.</param>
+        /// <param name="cost"> Название ки.</param>
         public Ticket(
             Session session,
             User user,
             string seat,
             decimal cost)
         {
-            this.TicketId = Guid.NewGuid();
+            this.TicketId = Guid.Empty;
             this.Session = session ?? throw new ArgumentNullException(nameof(session));
             this.User = user ?? throw new ArgumentNullException(nameof(user));
             this.Seat = seat ?? throw new ArgumentNullException(nameof(seat));
-            this.Cost = cost > 0 ? cost : throw new ArgumentNullException(nameof(cost));
+            this.Cost = cost;
         }
 
         /// <summary>
@@ -40,22 +37,22 @@ namespace Cinema
         public Guid TicketId { get; }
 
         /// <summary>
-        /// Сеанс.
+        /// Книги.
         /// </summary>
         public Session Session { get; }
 
         /// <summary>
-        /// Клиент.
+        /// Название полки.
         /// </summary>
         public User User { get; }
 
         /// <summary>
-        /// Место.
+        /// Название полки.
         /// </summary>
         public string Seat { get; }
 
         /// <summary>
-        /// Стоимость билета.
+        /// Название полки.
         /// </summary>
         public decimal Cost { get; }
 
