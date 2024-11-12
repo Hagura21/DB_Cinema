@@ -1,10 +1,9 @@
-﻿// <copyright file="Film.cs" company="Кирюшин Н.А.">
+// <copyright file="Film.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
 namespace Cinema
 {
-    using System.Collections.Generic;
     using Staff;
 
     /// <summary>
@@ -31,17 +30,24 @@ namespace Cinema
             string synopsis,
             int ageRestriction,
             int duration,
-            string director,
-            List<string> cast)
+            Director director,
+            ISet<Actor> cast)
         {
-            this.FilmId = Guid.NewGuid();
-            this.Title = title.TrimOrNull() ?? throw new ArgumentNullException(nameof(title));
-            this.Genre = genre.TrimOrNull() ?? throw new ArgumentNullException(nameof(genre));
-            this.Synopsis = synopsis.TrimOrNull() ?? throw new ArgumentNullException(nameof(synopsis));
+            this.FilmId = Guid.Empty;
+            this.Title = title ?? throw new ArgumentNullException(nameof(title));
+            this.Genre = genre ?? throw new ArgumentNullException(nameof(genre));
+            this.Synopsis = synopsis ?? throw new ArgumentNullException(nameof(synopsis));
             this.AgeRestriction = ageRestriction > 0 ? ageRestriction : throw new ArgumentOutOfRangeException(nameof(ageRestriction), "Age restriction cannot be negative.");
             this.Duration = duration > 0 ? duration : throw new ArgumentOutOfRangeException(nameof(duration), "Duration must be positive.");
-            this.Director = director.TrimOrNull() ?? throw new ArgumentNullException(nameof(director));
-            this.Сast = cast ?? throw new ArgumentNullException(nameof(cast));
+            this.Director = director ?? throw new ArgumentNullException(nameof(director));
+            this.Cast = cast ?? throw new ArgumentNullException(nameof(cast));
+
+            // Add this film to director and actor film lists
+            this.Director.Films.Add(this);
+            foreach (var actor in cast)
+            {
+                actor.Films.Add(this);
+            }
         }
 
         /// <summary>
@@ -77,12 +83,12 @@ namespace Cinema
         /// <summary>
         /// Режиссер.
         /// </summary>
-        public string Director { get; }
+        public Director Director { get; }
 
         /// <summary>
         /// Актерский состав.
         /// </summary>
-        public List<string> Сast { get; private set; }
+        public ISet<Actor> Cast { get; }
 
         /// <inheritdoc/>
         public bool Equals(Film? other)
@@ -99,7 +105,7 @@ namespace Cinema
 
             return this.Title == other.Title &&
                    this.Genre == other.Genre &&
-                   this.Director == other.Director;
+                   this.Director.Equals(other.Director);
         }
 
         /// <inheritdoc/>
@@ -116,6 +122,6 @@ namespace Cinema
 
         /// <inheritdoc/>
         public override string ToString() =>
-            $"{this.Title} ({this.Genre}) - Directed by {this.Director}";
+            $"{this.Title} ({this.Genre}) - Directed by {this.Director.Name}";
     }
 }
