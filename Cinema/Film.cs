@@ -38,7 +38,6 @@
             this.Director = director ?? throw new ArgumentNullException(nameof(director));
             this.Cast = cast ?? throw new ArgumentNullException(nameof(cast));
 
-            // Add this film to director and actor film lists
             this.Director.Films.Add(this);
             foreach (var actor in cast)
             {
