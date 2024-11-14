@@ -1,10 +1,8 @@
-// <copyright file="Film.cs" company="Кирюшин Н.А.">
-// Copyright (c) Кирюшин Н.А.. All rights reserved.
-// </copyright>
-
-namespace Cinema
+﻿namespace Cinema
 {
     using Staff;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Класс Фильм.
@@ -14,16 +12,14 @@ namespace Cinema
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="Film"/>.
         /// </summary>
-        /// <param name="title"> Название.</param>
-        /// <param name="genre"> Жанр фильма. </param>
-        /// <param name="synopsis"> Краткий обзор. </param>
-        /// <param name="ageRestriction"> Возрастное ограничение. </param>
-        /// <param name="duration"> Продолжительность фильма. </param>
-        /// <param name="director"> Режиссер. </param>
-        /// <param name="cast"> Актерский состав. </param>
-        /// <exception cref="ArgumentNullException">
-        /// Если какое-либо значение <see langword="null"/>.
-        /// </exception>
+        /// <param name="title">Название.</param>
+        /// <param name="genre">Жанр фильма.</param>
+        /// <param name="synopsis">Краткий обзор.</param>
+        /// <param name="ageRestriction">Возрастное ограничение.</param>
+        /// <param name="duration">Продолжительность фильма.</param>
+        /// <param name="director">Режиссер.</param>
+        /// <param name="cast">Актерский состав.</param>
+        /// <exception cref="ArgumentNullException">Если какое-либо значение <see langword="null"/>.</exception>
         public Film(
             string title,
             string genre,
@@ -48,6 +44,28 @@ namespace Cinema
             {
                 actor.Films.Add(this);
             }
+        }
+
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="Film"/> с массивом актеров.
+        /// </summary>
+        /// <param name="title">Название.</param>
+        /// <param name="genre">Жанр фильма.</param>
+        /// <param name="synopsis">Краткий обзор.</param>
+        /// <param name="ageRestriction">Возрастное ограничение.</param>
+        /// <param name="duration">Продолжительность фильма.</param>
+        /// <param name="director">Режиссер.</param>
+        /// <param name="actors">Актеры.</param>
+        public Film(
+            string title,
+            string genre,
+            string synopsis,
+            int ageRestriction,
+            int duration,
+            Director director,
+            params Actor[] actors)
+            : this(title, genre, synopsis, ageRestriction, duration, director, new HashSet<Actor>(actors))
+        {
         }
 
         /// <summary>
@@ -76,14 +94,14 @@ namespace Cinema
         public int AgeRestriction { get; }
 
         /// <summary>
-        /// Продолжителность фильма.
+        /// Продолжительность фильма.
         /// </summary>
         public int Duration { get; }
 
         /// <summary>
         /// Режиссер.
         /// </summary>
-        public Director Director { get; }
+        public Director Director { get; set; }
 
         /// <summary>
         /// Актерский состав.
