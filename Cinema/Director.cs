@@ -8,18 +8,16 @@ namespace Cinema
     {
         public Director(string name) : base(name)
         {
-            this.Films = new HashSet<Film>();
         }
-
-        public ISet<Film> Films { get; }
 
         public void AddFilm(Film film)
         {
-            if (film == null)
+            if (film is null)
             {
                 throw new ArgumentNullException(nameof(film));
             }
 
+            film.Director = this;
             this.Films.Add(film);
         }
     }
