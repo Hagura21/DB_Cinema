@@ -1,8 +1,9 @@
-namespace CinemaTest
+﻿namespace CinemaTest
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Numerics;
     using Cinema;
     using NUnit.Framework;
 
@@ -30,17 +31,15 @@ namespace CinemaTest
         [Test]
         public void Ctor_InvalidData_ThrowsException()
         {
-            var director = new Director("Christopher Nolan");
-            var actors = new HashSet<Actor>
-            {
-                new Actor("Leonardo DiCaprio"),
-            };
+            Director director = new Director("Christopher Nolan");
+            Actor actor1 = new Actor("Leonardo DiCaprio");
+            Actor actor2 = new Actor("Joseph Gordon-Levitt");
 
-            Assert.Throws<ArgumentNullException>(() => _ = new Film(null, "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actors));
-            Assert.Throws<ArgumentNullException>(() => _ = new Film("Inception", null, "A mind-bending thriller.", 13, 148, director, actors));
-            Assert.Throws<ArgumentNullException>(() => _ = new Film("Inception", "Sci-Fi", null, 13, 148, director, actors));
-            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", -1, 148, director, actors));
-            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 0, director, actors));
+            Assert.Throws<ArgumentNullException>(() => _ = new Film(null, "Sci-Fi", "A mind-bending thriller.", 13, 148, director, actor1, actor2));
+            Assert.Throws<ArgumentNullException>(() => _ = new Film("Inception", null, "A mind-bending thriller.", 13, 148, director, actor1, actor2));
+            Assert.Throws<ArgumentNullException>(() => _ = new Film("Inception", "Sci-Fi", null, 13, 148, director, actor1, actor2));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", -1, 148, director, actor1, actor2));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new Film("Inception", "Sci-Fi", "A mind-bending thriller.", 13, 0, director, actor1, actor2));
         }
 
         [Test]
