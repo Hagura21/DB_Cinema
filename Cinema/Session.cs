@@ -1,4 +1,4 @@
-// <copyright file="Session.cs" company="Кирюшин Н.А.">
+﻿// <copyright file="Session.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
@@ -27,7 +27,7 @@ namespace Cinema
             DateTime startTime,
             DateTime date)
         {
-            this.SessionId = Guid.NewGuid();
+            this.SessionId = Guid.Empty;
             this.Film = film ?? throw new ArgumentNullException(nameof(film), "Фильм не может быть null.");
             this.Hall = hall ?? throw new ArgumentNullException(nameof(hall), "Зал не может быть null.");
             this.StartTime = startTime;
@@ -48,12 +48,12 @@ namespace Cinema
         /// <summary>
         /// Зал.
         /// </summary>
-        public Hall Hall { get; }
+        public Hall Hall { get; set; }
 
         /// <summary>
         /// Время начала.
         /// </summary>
-        public DateTime StartTime { get; }
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// Дата.

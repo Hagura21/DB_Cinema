@@ -1,4 +1,4 @@
-// <copyright file="Ticket.cs" company="Кирюшин Н.А.">
+﻿// <copyright file="Ticket.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
@@ -28,7 +28,7 @@ namespace Cinema
             this.Session = session ?? throw new ArgumentNullException(nameof(session));
             this.User = user ?? throw new ArgumentNullException(nameof(user));
             this.Seat = seat ?? throw new ArgumentNullException(nameof(seat));
-            this.Cost = cost;
+            this.Cost = cost > 0 ? cost : throw new ArgumentOutOfRangeException(nameof(cost));
         }
 
         /// <summary>

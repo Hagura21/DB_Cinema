@@ -17,7 +17,7 @@ namespace Cinema
         /// <param name="name">Имя.</param>
         public Person(string name)
         {
-            this.PersonId = Guid.NewGuid();
+            this.PersonId = Guid.Empty;
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 

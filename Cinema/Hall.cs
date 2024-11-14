@@ -1,4 +1,4 @@
-// <copyright file="Hall.cs" company="Кирюшин Н.А.">
+﻿// <copyright file="Hall.cs" company="Кирюшин Н.А.">
 // Copyright (c) Кирюшин Н.А.. All rights reserved.
 // </copyright>
 
@@ -27,7 +27,7 @@ namespace Cinema
             string name,
             int capacity)
         {
-            this.HallId = Guid.NewGuid();
+            this.HallId = Guid.Empty;
             this.Name = name ?? throw new ArgumentNullException(nameof(name), "Название зала не может быть null.");
             this.Capacity = capacity > 0 ? capacity : throw new ArgumentException("Вместимость зала должна быть положительной.", nameof(capacity));
             this.sessions = new List<Session>();
@@ -51,12 +51,13 @@ namespace Cinema
         /// <summary>
         /// Список сессий, назначенных на зал.
         /// </summary>
-        private readonly List<Session> sessions;
+        private List<Session> sessions;
 
         /// <summary>
         /// Возвращает доступ к сессиям зала.
         /// </summary>
-        public IReadOnlyCollection<Session> Sessions => this.sessions.AsReadOnly();
+        public List<Session> Sessions => this.sessions;
+
 
         /// <summary>
         /// Добавляет новую сессию в зал.
@@ -65,7 +66,7 @@ namespace Cinema
         /// <exception cref="ArgumentNullException">Если сессия <see langword="null"/>.</exception>
         public void AddSession(Session session)
         {
-            if (session == null)
+            if (session is null)
             {
                 throw new ArgumentNullException(nameof(session), "Сессия не может быть null.");
             }
@@ -73,6 +74,7 @@ namespace Cinema
             if (!this.sessions.Contains(session))
             {
                 this.sessions.Add(session);
+                session.Hall = this;
             }
         }
 
@@ -80,10 +82,10 @@ namespace Cinema
         /// Удаляет сессию из зала.
         /// </summary>
         /// <param name="session">Сессия для удаления.</param>
-        /// <returns>Истина, если сессия была удалена; иначе — ложь.</returns>
+        /// <returns><see langword="true" , если сессия была удалена <see langword="false".</returns>
         public bool RemoveSession(Session session)
         {
-            if (session == null)
+            if (session is null)
             {
                 throw new ArgumentNullException(nameof(session), "Сессия не может быть null.");
             }
