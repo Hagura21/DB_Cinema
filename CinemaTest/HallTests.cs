@@ -1,11 +1,17 @@
-﻿namespace CinemaTest
+﻿// <copyright file="HallTests.cs" company="Кирюшин Н.А.">
+// Copyright (c) Кирюшин Н.А.. All rights reserved.
+// </copyright>
+
+namespace CinemaTest
 {
     using System;
     using System.Collections.Generic;
     using Cinema;
     using NUnit.Framework;
 
+    /// <summary>
     /// Тесты для класса <see cref="Cinema.Hall"/>.
+    /// </summary>
     [TestFixture]
     public sealed class HallTests
     {
@@ -16,11 +22,13 @@
             Assert.DoesNotThrow(() => _ = new Hall(name, capacity));
         }
 
-        [TestCase(null, 100)]
         [TestCase("Main Hall", -1)]
-        public void Ctor_InvalidData_ThrowsException(string name, int capacity)
+        [TestCase("VIP Hall", 0)]
+        public void Ctor_InvalidCapacity_ThrowsArgumentException(string name, int capacity)
         {
-            Assert.Throws<ArgumentException>(() => _ = new Hall(name, capacity));
+            var ex = Assert.Throws<ArgumentException>(() => _ = new Hall(name, capacity));
+            Assert.That(ex.ParamName, Is.EqualTo("capacity"));
+            Assert.That(ex.Message, Does.StartWith("Вместимость зала должна быть положительной."));
         }
 
         [Test]

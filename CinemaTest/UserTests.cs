@@ -1,11 +1,17 @@
-﻿namespace CinemaTest
+﻿// <copyright file="UserTests.cs" company="Кирюшин Н.А.">
+// Copyright (c) Кирюшин Н.А.. All rights reserved.
+// </copyright>
+
+namespace CinemaTest
 {
     using System;
     using System.Collections.Generic;
     using Cinema;
     using NUnit.Framework;
 
+    /// <summary>
     /// Тесты для класса <see cref="Cinema.User"/>.
+    /// </summary>
     [TestFixture]
     public sealed class UserTests
     {
